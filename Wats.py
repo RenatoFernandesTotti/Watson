@@ -11,6 +11,7 @@ class Wats:
             url='https://gateway.watsonplatform.net/assistant/api'
         )
         self.assistant.set_detailed_response(False)
+        self.tops=top
         self.resposta = ResponseTreatment(top,msgList)
     def bot_resposta(self,msg_list,input_user):
         try:   
@@ -23,6 +24,7 @@ class Wats:
             )
             try:
                 intent = response.get('intents')[0].get('intent')
+                falaBot=str(response.get('output').get('text')[0])
             except:
                 intent='error'
             if(intent == 'Professor'):
@@ -30,14 +32,18 @@ class Wats:
             elif(intent =='Salas'):
                 self.resposta.sala(response,msg_list)       
             elif(intent=='Boasvindas'):
-                self.resposta.insertMessage(str(response.get('output').get('text')[0]))
+                self.resposta.insertMessage(falaBot)
             elif(intent=='Setores'):
                 self.resposta.setores(response,msg_list)
-            elif(intent=='GoodBye'):
-                self.resposta.insertMessage(str(response.get('output').get('text')[0]))
+            elif(intent=='Adeus'):
+                self.resposta.insertMessage(falaBot)
+                self.tops.quit()
+            elif(intent=='RespostaVida'):
+                self.resposta.insertMessage(falaBot)
             else:
-                self.resposta.insertMessage(str(response.get('output').get('text')[0]))
+                self.resposta.insertMessage(falaBot)
             self.resposta.insertMessage('Posso ajudar em algo mais?')
 
-        except WatsonApiException as ex:
-            self.resposta.insertMessage("Method failed with status code " + str(ex.code) + ": " + str(ex.message))
+        except WatsonApiException as identifier:
+            self.resposta.insertMessage("Method failed with status code " + str(identifier.code) + ": " + str(identifier.message))
+            pass

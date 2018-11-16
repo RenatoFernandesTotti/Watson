@@ -9,8 +9,6 @@ def receive(msg):
 
 def send(event=None):
     msg = my_msg.get()
-    if msg == "{quit}":
-        top.quit()
     msg='Voce: '+   msg
     my_msg.set("")
     msg_list.insert(tkinter.END,msg)

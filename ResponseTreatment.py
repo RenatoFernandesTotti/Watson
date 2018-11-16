@@ -82,7 +82,17 @@ class ResponseTreatment:
                         'esquerda da cantina! Voce so precisa pegar um caminho entre as duas!')
         elif(setor=='Cantina'):
             resposta+=('A cantina fica perto da Biblioteca em frente ao predio D')
-        self.insertMessage(resposta)
+        elif(setor=='Academia'):
+            resposta+=('A a cademia fica embaixo da cantina!')
+        elif(setor=='FACE'):
+            resposta+=('O face fica no prédio')
+        
+        elif(setor=='Mapa'):
+            self.mapPopup()
+        if(setor!='Mapa'):
+            self.insertMessage(resposta+"\n Caso voce queria, eu posso mostrar um mapa da facens!")
+        else:
+            self.insertMessage("Abrindo mapa da facens...")
         pass
     
     def getVar(self,event=None):
@@ -105,8 +115,8 @@ class ResponseTreatment:
         self.msg_list.insert(END,msg)
         self.msg_list.yview(END)
 
-    def mapPopup(self,fodac,msg):
-        load = Image.open('./scr/images/sector-'+fodac+'.png')
+    def mapPopup(self):
+        load = Image.open('./scr/images/sector-map.png')
         render = ImageTk.PhotoImage(load)
         op={"height":load.height,"width":load.width}
         pop=Toplevel()
