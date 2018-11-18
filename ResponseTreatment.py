@@ -2,8 +2,9 @@ import json
 import pyodbc
 import re
 from tkinter import *
-import os
+#Simport os
 from PIL import Image, ImageTk
+
 class ResponseTreatment:
     def __init__(self,top,msgList):
         conn = pyodbc.connect(r'Driver={ODBC Driver 13 for SQL Server};SERVER=localhost;DATABASE=Professor;Trusted_Connection=yes;')
@@ -42,20 +43,26 @@ class ResponseTreatment:
         self.insertMessage(retorno)
         msg_list.yview(END)
         pass
-    def sala(self, reponse,msg_list):
-        #reponsetxt=str.split(reponsetxt)
-        a=reponse
-        retorno = str(a.get('output').get('text')[0])
-        user= str(a.get('input').get('text'))
+        """dadsad"""
+    def sala(self,response,msg_list):
+        #Resposta do bot
+        retorno = str(response.get('output').get('text')[0])
+        #Input do usuario
+        user= str(response.get('input').get('text'))
+        #REGEX para achar a sala
         result=self.regex.search(user)
+        #Tentativa de recupecaro do regex
         try:
             result=result.group(0)
         except:
             self.insertMessage("Eu nao encontrei essa sala, voce pode ter digitado uma sala invalida ou no formato errado, porfavor digite por exemplo A12")
             return
+        #Tratamento de resposta
         result=str.upper(result)
         result=result.replace(" ","")
         result=list(result)
+        #Procura de predios e suas
+        #respectivas limitacoes
         if result[0] not in self.predios:
             self.insertMessage('Esse predio nao existe!')
         if(result[0]=='C' and int(result[1])>=5):
@@ -66,10 +73,11 @@ class ResponseTreatment:
             return
         elif(int(result[1])>=3):
             erro='O predio '+str(result[0])+' nao tem mais que dois andares!'
-            self.insertMessage(erro)    
-        retorno=retorno.replace("^predio","no predio "+result[0])
-        retorno=retorno.replace("^andar",result[1]+"ºandar")
-        self.insertMessage(retorno)
+            self.insertMessage(erro)
+        else:    
+            retorno=retorno.replace("^predio","no predio "+result[0])
+            retorno=retorno.replace("^andar",result[1]+"ºandar")
+            self.insertMessage(retorno)
     def setores(self,response,msg_list):
         setor=response.get('entities')[0].get('value')
         resposta=""
