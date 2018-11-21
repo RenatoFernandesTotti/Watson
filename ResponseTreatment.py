@@ -1,5 +1,6 @@
 import json
 import pyodbc
+import sqlite3
 import re
 from tkinter import *
 #Simport os
@@ -7,7 +8,7 @@ from PIL import Image, ImageTk
 
 class ResponseTreatment:
     def __init__(self,top,msgList):
-        conn = pyodbc.connect(r'Driver={ODBC Driver 13 for SQL Server};SERVER=localhost;DATABASE=Professor;Trusted_Connection=yes;')
+        conn = sqlite3.connect('.\scr\database\Professor.db')
         self.cursor = conn.cursor()
         self.regex=re.compile("[a-z][ ]*[1-3][0-9]",re.IGNORECASE)
         self.predios=('A','E','L','G','H','E','B','J','C','D','K','I')#Todos os predios da facens
