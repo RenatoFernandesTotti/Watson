@@ -3,8 +3,8 @@ import pyodbc
 import sqlite3
 import re
 from tkinter import *
-#Simport os
 from PIL import Image, ImageTk
+from TextToSpeech import TextToSpeech
 
 class ResponseTreatment:
     def __init__(self,top,msgList):
@@ -14,23 +14,24 @@ class ResponseTreatment:
         self.predios=('A','E','L','G','H','E','B','J','C','D','K','I')#Todos os predios da facens
         self.root=top
         self.msg_list=msgList
+        self.voz=TextToSpeech()
     def professor(self,response,msg_list):
         i=0
         profs=response.get('entities')
         self.p=0
         if(len(profs)==0):
-            self.insertMessage("nao encontrei professores com esse nome!")
+            self.insertMessage("não encontrei professores com esse nome!")
             return 
         elif(len(profs)!=1):
             repete=True
             while (repete):
-                self.insertMessage("Encontrei mais de um professor com esse nome! qual deles e o correto?")
+                self.insertMessage("Encontrei mais de um professor com esse nome! qual deles é o correto?")
                 for prof in profs:
                     self.insertMessage(str(i+1)+':'+prof.get('value'))
                     i+=1
                 self.popup()
                 if(self.p<0 or self.p>len(profs)):
-                    self.insertMessage("\n o numero deve ser igual a um da lista!!\n")
+                    self.insertMessage("\n o número deve ser igual a um da lista!!\n")
                     i=0
                     continue#Caso o numero seja invalido ocorre um loop forcado a partir do teste
                 break#caso esteja tudo correto o programa continua
@@ -56,7 +57,7 @@ class ResponseTreatment:
         try:
             result=result.group(0)
         except:
-            self.insertMessage("Eu nao encontrei essa sala, voce pode ter digitado uma sala invalida ou no formato errado, porfavor digite por exemplo A12")
+            self.insertMessage("Eu não encontrei essa sala, você pode ter digitado uma sala inválida ou no formato errado. Por favor, tente novamente: (digite A12, por exemplo)")
             return
         #Tratamento de resposta
         result=str.upper(result)
@@ -123,9 +124,13 @@ class ResponseTreatment:
     def insertMessage(self,msg):
         self.msg_list.insert(END,msg)
         self.msg_list.yview(END)
+        if(msg.find('email')!= -1):
+            msg=msg.replace('.',' ponto ')
+            msg=msg.replace('@',' arroba ')
+        self.voz.speak(msg)
 
     def mapPopup(self):
-        load = Image.open('./scr/images/sector-map.png')
+        load = Image.open('./scr/images/MapBallon.png')
         render = ImageTk.PhotoImage(load)
         op={"height":load.height,"width":load.width}
         pop=Toplevel()

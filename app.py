@@ -1,5 +1,8 @@
 import tkinter
 from Wats import Wats
+from TextToSpeech import TextToSpeech
+from SpeechToText import SpeechToText
+import os
 def receive(msg):
     while True:
         try:
@@ -14,7 +17,18 @@ def send(event=None):
     msg_list.insert(tkinter.END,msg)
     bot.bot_resposta(msg_list,msg)
 
+def voiceSend():
+    texto=SpeechToText()
+    voz.speak("estou escutando")
+    texto=texto.record()
+    msg_list.insert(tkinter.END,texto)
+    bot.bot_resposta(msg_list,texto)
+    pass
 
+#
+os.system('pip install -r ./req.txt')
+os.system('cls')
+#Parte grafica
 top = tkinter.Tk()
 top.title("Sherbot Holmes")
 messages_frame = tkinter.Frame(top)
@@ -31,7 +45,12 @@ entry_field.bind("<Return>", send)
 entry_field.pack()
 send_button = tkinter.Button(top, text="Enviar", command=send)
 send_button.pack()
+voiceSend_Button=tkinter.Button(top, text="Falar", command=voiceSend)
+voiceSend_Button.pack()
+voz=TextToSpeech()
 msg_list.insert(tkinter.END,"Bom dia! Meu nome é SherBot Holmes estou aqui pra te dar informacoes sobre a facens!")
 msg_list.insert(tkinter.END,"Em que posso ajudar?")
 bot=Wats(top,msg_list)
+voz.speak("Bom dia! Meu nome é XerBot Rolmes estou aqui pra te dar informações sobre a facêns!  Em que posso ajudar?")
 tkinter.mainloop()
+

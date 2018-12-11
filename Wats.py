@@ -24,9 +24,9 @@ class Wats:
             )
             try:
                 intent = response.get('intents')[0].get('intent')
-                falaBot=str(response.get('output').get('text')[0])
             except:
                 intent='error'
+            falaBot=str(response.get('output').get('text')[0])
             if(intent == 'Professor'):
                 self.resposta.professor(response,msg_list)
             elif(intent =='Salas'):
@@ -42,7 +42,7 @@ class Wats:
                 self.resposta.insertMessage(falaBot)
             else:
                 self.resposta.insertMessage(falaBot)
-            self.resposta.insertMessage('Posso ajudar em algo mais?')
+            #self.resposta.insertMessage('Posso ajudar em algo mais?')
 
         except WatsonApiException as identifier:
             self.resposta.insertMessage("Method failed with status code " + str(identifier.code) + ": " + str(identifier.message))
