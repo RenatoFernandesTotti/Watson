@@ -9,7 +9,7 @@ def receive(msg):
             msg_list.insert(tkinter.END, msg)
         except OSError:
             break
-
+#Botoes funcoes
 def send(event=None):
     msg = my_msg.get()
     msg='Voce: '+   msg
