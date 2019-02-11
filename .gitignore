@@ -1,5 +1,5 @@
 
 *.pyc
-.vscode/launch.json
+.vscode
 
 *.wav

@@ -22,6 +22,8 @@ class SpeechToText:
         print("Escrevendo arquivo")
         sf.write('./sounds/SpeechToText.wav',self.myrecording,fs)
         return self.reconhecer()
+    
+
     def reconhecer(self):
         data= open('./sounds/SpeechToText.wav', 'rb')
         data=self.SpeechtoTxt.recognize(data,model='pt-BR_NarrowbandModel')
